@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Trip | TripMap</title>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/Aeroplane.png">
+</head>
+<body>
+    <header style="background: linear-gradient(135deg, #1e5799 0%,#207cca 100%); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 15px 0;">
+        <div id="menu-bar" class="fas fa-bars" style="color: white;"></div>
+        <a class="navbar-brand" href="home.html">
+            <div class="logo-image">
+                <img src="images/tripMap.png" class="img-fluid" style="object-fit: contain; width: 200px; height: 30px">
+            </div>
+        </a>
+        <div class="nav">
+            <nav class="navbar" style="margin-top: 10px;">
+                <a href="home.html" style="color: white; padding: 10px 15px; border-radius: 4px; transition: all 0.3s;">Home</a>
+                <a href="book.html" style="color: white; padding: 10px 15px; border-radius: 4px; transition: all 0.3s;">Book</a>
+                <a href="services.html" style="color: white; padding: 10px 15px; border-radius: 4px; transition: all 0.3s;">Services</a>
+                <a href="packages.html" style="color: white; padding: 10px 15px; border-radius: 4px; transition: all 0.3s;">Packages</a>
+                <a href="gallery.html" style="color: white; padding: 10px 15px; border-radius: 4px; transition: all 0.3s;">Gallery</a>
+                <a href="review.html" style="color: white; padding: 10px 15px; border-radius: 4px; transition: all 0.3s;">Review</a>
+                <a href="contact.html" style="color: white; padding: 10px 15px; border-radius: 4px; transition: all 0.3s;">Contact</a>
+            </nav>
+        </div>
+        <div class="icons">
+            <i class="fas fa-user" id="login-btn" style="color: white;"></i>
+        </div>
+    </header>
+
+    <div class="login-form-container">
+        <i class="fas fa-times" id="form-close"></i>
+        <form action="">
+            <h3>login</h3>
+            <input type="email" class="box" placeholder="Enter your Email">
+            <input type="password" class="box" placeholder="Enter your Password">
+            <input type="submit" value="Login Now" class="btn">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
+            <p>Forget password? <a href="#">click here</a></p>
+            <p>don't have and account? <a href="#">register now</a></p>
+        </form>
+    </div>
+
+    <section class="book" style="margin-top: 80px;">
+        <h1 class="heading"><span>BOOK NOW</span></h1>
+        <br />
+        <div class="row">
+            <div class="image">
+                <img src="images/book-img.png" alt="">
+            </div>
+            <form action="">
+                <div class="inputBox">
+                    <h3><i class="fas fa-map-marker-alt"></i> Location </h3>
+                    <input type="text" placeholder="Destination Name">
+                </div>
+                <div class="inputBox">
+                    <h3><i class="fas fa-user-friends"></i> No of Persons </h3>
+                    <input type="number" placeholder="Number of Guests">
+                </div>
+                <div class="inputBox">
+                    <h3><i class="fas fa-phone-alt"></i> Phone No </i></h3>
+                    <input type="number" placeholder="Contact Number">
+                </div>
+                <div class="inputBox">
+                    <h3><i class="fas fa-plane-arrival"></i> Arrival Date </h3>
+                    <input type="date">
+                </div>
+                <div class="inputBox">
+                    <h3><i class="fas fa-plane-departure"></i> Departure Date </h3>
+                    <input type="date">
+                </div>
+                <input type="submit" class="btn" value="Book Now">
+            </form>
+        </div>
+    </section>
+
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script>
+        // Get location parameter from URL and pre-fill the location field
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const location = urlParams.get('location');
+                if (location) {
+                    const locationInput = document.querySelector('.inputBox:nth-child(1) input');
+                    if (locationInput) {
+                        locationInput.value = decodeURIComponent(location);
+                    }
+                }
+            } catch (error) {
+                console.error('Error processing location parameter:', error);
+            }
+        });
+    </script>
+    <!-- Booking Confirmation Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Booking Confirmed!</h2>
+            <p>Your trip to <span id="confirmedLocation"></span> has been successfully booked.</p>
+            <button id="closeModalBtn" class="btn">OK</button>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.2s;
+        }
+        .modal-content {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            margin: 10% auto;
+            padding: 40px;
+            border: 3px solid #007bff;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .modal-content h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .modal-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .close-modal {
+            color: #777;
+            position: absolute;
+            right: 25px;
+            top: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .close-modal:hover {
+            color: #ff0000;
+            transform: scale(1.2);
+        }
+        #closeModalBtn {
+            background: #007bff;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        #closeModalBtn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+        }
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        #confirmedLocation {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 20px;
+            text-decoration: underline;
+        }
+    </style>
+
+    <script>
+        // Ensure DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the form element
+            const bookingForm = document.querySelector('section.book form');
+            
+            if (bookingForm) {
+                // Handle form submission
+                bookingForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get location value
+                    const locationInput = bookingForm.querySelector('.inputBox:nth-child(1) input');
+                    if (locationInput) {
+                        const location = locationInput.value;
+                        document.getElementById('confirmedLocation').textContent = location || 'your destination';
+                        
+                        // Show modal
+                        const modal = document.getElementById('bookingModal');
+                        if (modal) {
+                            modal.style.display = 'block';
+                            
+                            // Close modal handlers
+                            document.querySelector('.close-modal').onclick = function() {
+                                modal.style.display = 'none';
+                            }
+                            
+                            document.getElementById('closeModalBtn').onclick = function() {
+                                modal.style.display = 'none';
+                                // Submit form after confirmation
+                                bookingForm.submit();
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Booking form not found');
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
